@@ -7,7 +7,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader
 
-
+from bison.archive.gadget_bispectrum_archive import GadgetBispectrumArchive
 
 class Bispectrum_Emulator():
     def __init__(self, 
