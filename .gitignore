@@ -1,0 +1,5 @@
+notebooks/.ipynb_checkpoints/
+notebooks/*.ipynb
+bison.egg-info/
+*/__pycache__/
+*/*/__pycache__/
