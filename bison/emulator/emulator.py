@@ -9,6 +9,18 @@ from torch.utils.data import Dataset, DataLoader
 
 from bison.archive.gadget_bispectrum_archive import GadgetBispectrumArchive
 
+class BispectrumDataset(Dataset):
+    def __init__(self, training_data, training_coefficients):
+        self.training_data = training_data
+        self.training_coefficients = training_coefficients
+
+    def __len__(self):
+        return len(self.training_data)
+
+    def __getitem__(self, idx):
+        return torch.Tensor(self.training_data[idx]), torch.Tensor(self.training_coefficients[idx])
+
+
 class Bispectrum_Emulator():
     def __init__(self, 
                  ndeg=4, 
@@ -215,9 +227,9 @@ class Bispectrum_Emulator():
             test_data[0]['gamma'],
             test_data[0]['kF_Mpc'],
         ]
-        test_data_snap = (np.array(test_data_snap) - emu.paramLims[:,1]) / (emu.paramLims[:,1]-emu.paramLims[:,0])
+        test_data_snap = (np.array(test_data_snap) - self.paramLims[:,1]) / (self.paramLims[:,1]-self.paramLims[:,0])
 
-        ypredict = emu._evaluate_neural_network(test_data_snap.reshape(1,len(test_data_snap)))
-        ypredict = emu._Bispectrum_from_polynomial(ypredict[0])
+        ypredict = self._evaluate_neural_network(test_data_snap.reshape(1,len(test_data_snap)))
+        ypredict = self._Bispectrum_from_polynomial(ypredict[0])
 
         return ypredict
